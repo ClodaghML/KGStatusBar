@@ -32,11 +32,11 @@
 }
 
 + (void)showWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor blackColor] textColor:[UIColor colorWithRed:191.0/255.0 green:191.0/255.0 blue:191.0/255.0 alpha:1.0]];
+    [[KGStatusBar sharedView] showWithStatus:status];
 }
 
 + (void)showErrorWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status barColor:[UIColor colorWithRed:97.0/255.0 green:4.0/255.0 blue:4.0/255.0 alpha:1.0] textColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]];
+    [[KGStatusBar sharedView] showWithStatus:status];
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
 }
 
@@ -55,12 +55,12 @@
     return self;
 }
 
-- (void)showWithStatus:(NSString *)status barColor:(UIColor*)barColor textColor:(UIColor*)textColor{
+- (void)showWithStatus:(NSString *)status{
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
     [self.topBar setHidden:NO];
-    self.topBar.backgroundColor = barColor;
+    self.topBar.backgroundColor = self.topBarColor;
     NSString *labelText = status;
     CGRect labelRect = CGRectZero;
     CGFloat stringWidth = 0;
@@ -76,7 +76,7 @@
     self.stringLabel.alpha = 0.0;
     self.stringLabel.hidden = NO;
     self.stringLabel.text = labelText;
-    self.stringLabel.textColor = textColor;
+    self.stringLabel.textColor = self.textColor;
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 1.0;
     }];
@@ -129,7 +129,7 @@
 - (UILabel *)stringLabel {
     if (stringLabel == nil) {
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		stringLabel.textColor = [UIColor colorWithRed:191.0/255.0 green:191.0/255.0 blue:191.0/255.0 alpha:1.0];
+		stringLabel.textColor = self.textColor;
 		stringLabel.backgroundColor = [UIColor clearColor];
 		stringLabel.adjustsFontSizeToFitWidth = YES;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
@@ -138,9 +138,7 @@
         stringLabel.textAlignment = NSTextAlignmentCenter;
 #endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
-		stringLabel.font = [UIFont boldSystemFontOfSize:14.0];
-		stringLabel.shadowColor = [UIColor blackColor];
-		stringLabel.shadowOffset = CGSizeMake(0, -1);
+		stringLabel.font = self.textFont;
         stringLabel.numberOfLines = 0;
         stringLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     }

@@ -24,6 +24,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    [KGStatusBar sharedView].topBarColor = [UIColor greenColor];
+    [KGStatusBar sharedView].textColor = [UIColor blueColor];
 }
 
 - (void)didReceiveMemoryWarning

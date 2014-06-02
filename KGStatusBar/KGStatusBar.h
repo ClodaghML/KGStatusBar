@@ -10,6 +10,11 @@
 
 @interface KGStatusBar : UIView
 
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong) UIFont *textFont;
+@property (nonatomic, strong) UIColor *topBarColor;
+
++ (KGStatusBar *)sharedView;
 + (void)showWithStatus:(NSString*)status;
 + (void)showErrorWithStatus:(NSString*)status;
 + (void)showSuccessWithStatus:(NSString*)status;
