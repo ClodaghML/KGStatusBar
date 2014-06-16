@@ -9,9 +9,9 @@
 #import "KGStatusBar.h"
 
 @interface KGStatusBar ()
-    @property (nonatomic, strong, readonly) UIWindow *overlayWindow;
-    @property (nonatomic, strong, readonly) UIView *topBar;
-    @property (nonatomic, strong) UILabel *stringLabel;
+@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+@property (nonatomic, strong, readonly) UIView *topBar;
+@property (nonatomic, strong) UILabel *stringLabel;
 @end
 
 @implementation KGStatusBar
@@ -56,26 +56,18 @@
 }
 
 - (void)showWithStatus:(NSString *)status{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
     [self.topBar setHidden:NO];
     self.topBar.backgroundColor = self.topBarColor;
-    NSString *labelText = status;
-    CGRect labelRect = CGRectZero;
-    CGFloat stringWidth = 0;
-    CGFloat stringHeight = 0;
-    if(labelText) {
-        CGSize stringSize = [labelText sizeWithFont:self.stringLabel.font constrainedToSize:CGSizeMake(self.topBar.frame.size.width, self.topBar.frame.size.height)];
-        stringWidth = stringSize.width;
-        stringHeight = stringSize.height;
-        
-        labelRect = CGRectMake((self.topBar.frame.size.width / 2) - (stringWidth / 2), 0, stringWidth, stringHeight);
-    }
-    self.stringLabel.frame = labelRect;
+
+    CGRect frame = CGRectMake(0, 0, self.topBar.frame.size.width, self.topBar.frame.size.height);
+    self.stringLabel.frame = CGRectInset(frame, 10, 0);
     self.stringLabel.alpha = 0.0;
     self.stringLabel.hidden = NO;
-    self.stringLabel.text = labelText;
+    self.stringLabel.text = status;
     self.stringLabel.textColor = self.textColor;
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 1.0;
@@ -85,8 +77,11 @@
 
 - (void) dismiss
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 0.0;
+        self.topBar.alpha = 0;
+        self.overlayWindow.alpha = 0;
     } completion:^(BOOL finished) {
         [topBar removeFromSuperview];
         topBar = nil;
@@ -131,7 +126,7 @@
         stringLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		stringLabel.textColor = self.textColor;
 		stringLabel.backgroundColor = [UIColor clearColor];
-		stringLabel.adjustsFontSizeToFitWidth = YES;
+		stringLabel.adjustsFontSizeToFitWidth = NO;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
         stringLabel.textAlignment = UITextAlignmentCenter;
 #else
@@ -139,8 +134,7 @@
 #endif
 		stringLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
 		stringLabel.font = self.textFont;
-        stringLabel.numberOfLines = 0;
-        stringLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        stringLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     
     if(!stringLabel.superview)
@@ -186,12 +180,12 @@
     
     CGAffineTransform rotationTransform = CGAffineTransformMakeRotation([self rotation]);
     [UIView animateWithDuration:[[UIApplication sharedApplication] statusBarOrientationAnimationDuration]
-                       animations:^{
-                           self.overlayWindow.transform = rotationTransform;
-                           // Transform invalidates the frame, so use bounds/center
-                           self.overlayWindow.bounds = CGRectMake(0.f, 0.f, [self rotatedSize].width, [self rotatedSize].height);
-                           self.topBar.frame = CGRectMake(0.f, 0.f, [self rotatedSize].width, 20.f);
-                       }];
+                     animations:^{
+                         self.overlayWindow.transform = rotationTransform;
+                         // Transform invalidates the frame, so use bounds/center
+                         self.overlayWindow.bounds = CGRectMake(0.f, 0.f, [self rotatedSize].width, [self rotatedSize].height);
+                         self.topBar.frame = CGRectMake(0.f, 0.f, [self rotatedSize].width, 20.f);
+                     }];
 }
 
 @end

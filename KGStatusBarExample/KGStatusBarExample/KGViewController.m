@@ -26,6 +26,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [KGStatusBar sharedView].topBarColor = [UIColor greenColor];
     [KGStatusBar sharedView].textColor = [UIColor blueColor];
+    [KGStatusBar sharedView].textFont = [UIFont fontWithName:@"HelveticaNeue" size:15];
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,7 +36,7 @@
 }
 
 - (IBAction)successButtonPressed:(id)sender {
-    [KGStatusBar showSuccessWithStatus:@"Successfully synced"];
+    [KGStatusBar showSuccessWithStatus:@"Successfully synced with a big long bit of text"];
 }
 
 - (IBAction)errorButtonPressed:(id)sender {
