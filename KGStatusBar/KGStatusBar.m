@@ -56,7 +56,6 @@
 }
 
 - (void)showWithStatus:(NSString *)status{
-    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
@@ -77,7 +76,6 @@
 
 - (void) dismiss
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 0.0;
         self.topBar.alpha = 0;

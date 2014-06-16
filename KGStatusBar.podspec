@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "KGStatusBar"
-  s.version      = "1.1"
+  s.version      = "1.2"
   s.summary      = "A minimal status bar for iOS."
   s.description  = <<-DESC
                       Similar to the status bar seen in the MailBox app, it covers the top status bar and appears like the message is embedded within.
