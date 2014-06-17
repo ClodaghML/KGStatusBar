@@ -36,7 +36,16 @@
 }
 
 - (IBAction)successButtonPressed:(id)sender {
-    [KGStatusBar showSuccessWithStatus:@"Successfully synced with a big long bit of text"];
+
+    NSString *userNameString = [NSString stringWithFormat:@"%@: ", @"Rudiger Simpson"];
+    NSString *fullString = [userNameString stringByAppendingString:@"This is a long message"];
+    
+    NSRange range = [fullString rangeOfString:userNameString];
+    NSMutableAttributedString *messageAttributedString = [[NSMutableAttributedString alloc] initWithString:fullString];
+    
+    [messageAttributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"HelveticaNeue-Bold" size:14] range:range];
+
+    [KGStatusBar showSuccessWithAttributedStatus:messageAttributedString];
 }
 
 - (IBAction)errorButtonPressed:(id)sender {

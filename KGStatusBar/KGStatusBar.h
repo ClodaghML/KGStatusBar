@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIColor *topBarColor;
 
 + (KGStatusBar *)sharedView;
++ (void)showSuccessWithAttributedStatus:(NSAttributedString *)status;
 + (void)showWithStatus:(NSString*)status;
 + (void)showErrorWithStatus:(NSString*)status;
 + (void)showSuccessWithStatus:(NSString*)status;

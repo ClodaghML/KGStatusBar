@@ -31,6 +31,12 @@
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
 }
 
++ (void)showSuccessWithAttributedStatus:(NSAttributedString *)status
+{
+    [[KGStatusBar sharedView] showWithAttributedStatus:status];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+}
+
 + (void)showWithStatus:(NSString*)status {
     [[KGStatusBar sharedView] showWithStatus:status];
 }
@@ -56,6 +62,11 @@
 }
 
 - (void)showWithStatus:(NSString *)status{
+    [[KGStatusBar sharedView] showWithAttributedStatus:[[NSAttributedString alloc] initWithString:status]];
+}
+
+- (void)showWithAttributedStatus:(NSAttributedString *)status {
+
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
@@ -66,7 +77,7 @@
     self.stringLabel.frame = CGRectInset(frame, 10, 0);
     self.stringLabel.alpha = 0.0;
     self.stringLabel.hidden = NO;
-    self.stringLabel.text = status;
+    self.stringLabel.attributedText = status;
     self.stringLabel.textColor = self.textColor;
     [UIView animateWithDuration:0.4 animations:^{
         self.stringLabel.alpha = 1.0;
