@@ -28,13 +28,13 @@
 + (void)showSuccessWithStatus:(NSString*)status
 {
     [KGStatusBar showWithStatus:status];
-    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.5];
 }
 
 + (void)showSuccessWithAttributedStatus:(NSAttributedString *)status
 {
     [[KGStatusBar sharedView] showWithAttributedStatus:status];
-    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.5];
 }
 
 + (void)showWithStatus:(NSString*)status {
@@ -43,7 +43,7 @@
 
 + (void)showErrorWithStatus:(NSString*)status {
     [[KGStatusBar sharedView] showWithStatus:status];
-    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.0 ];
+    [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.5];
 }
 
 + (void)dismiss {
@@ -66,13 +66,13 @@
 }
 
 - (void)showWithAttributedStatus:(NSAttributedString *)status {
-
+    
     if(!self.superview)
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
     [self.topBar setHidden:NO];
     self.topBar.backgroundColor = self.topBarColor;
-
+    
     CGRect frame = CGRectMake(0, 0, self.topBar.frame.size.width, self.topBar.frame.size.height);
     self.stringLabel.frame = CGRectInset(frame, 10, 0);
     self.stringLabel.alpha = 0.0;
@@ -88,9 +88,9 @@
 - (void) dismiss
 {
     [UIView animateWithDuration:0.4 animations:^{
-        self.stringLabel.alpha = 0.0;
-        self.topBar.alpha = 0;
-        self.overlayWindow.alpha = 0;
+        CGRect topBarFrame = self.topBar.frame;
+        topBarFrame.origin.y = -20;
+        self.topBar.frame = topBarFrame;
     } completion:^(BOOL finished) {
         [topBar removeFromSuperview];
         topBar = nil;
@@ -124,8 +124,13 @@
 
 - (UIView *)topBar {
     if(!topBar) {
-        topBar = [[UIView alloc] initWithFrame:CGRectMake(0.f, 0.f, [self rotatedSize].width, 20.0f)];
+        topBar = [[UIView alloc] initWithFrame:CGRectMake(0.f, -20, [self rotatedSize].width, 20.0f)];
         [overlayWindow addSubview:topBar];
+        [UIView animateWithDuration:0.4 animations:^{
+            CGRect topBarFrame = topBar.frame;
+            topBarFrame.origin.y = 0;
+            topBar.frame = topBarFrame;
+        }];
     }
     return topBar;
 }
