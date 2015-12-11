@@ -25,6 +25,14 @@
     return sharedView;
 }
 
++ (void)showWithStatus:(NSString *)status{
+    [[KGStatusBar sharedView] showWithAttributedStatus:[[NSAttributedString alloc] initWithString:status]];
+}
+
++ (void)showWithAttributedStatus:(NSAttributedString*)status {
+    [[KGStatusBar sharedView] showWithAttributedStatus:status];
+}
+
 + (void)showSuccessWithStatus:(NSString*)status
 {
     [KGStatusBar showWithStatus:status];
@@ -37,12 +45,8 @@
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.5];
 }
 
-+ (void)showWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status];
-}
-
 + (void)showErrorWithStatus:(NSString*)status {
-    [[KGStatusBar sharedView] showWithStatus:status];
+    [KGStatusBar showWithStatus:status];
     [KGStatusBar performSelector:@selector(dismiss) withObject:self afterDelay:2.5];
 }
 
@@ -61,9 +65,6 @@
     return self;
 }
 
-- (void)showWithStatus:(NSString *)status{
-    [[KGStatusBar sharedView] showWithAttributedStatus:[[NSAttributedString alloc] initWithString:status]];
-}
 
 - (void)showWithAttributedStatus:(NSAttributedString *)status {
     
